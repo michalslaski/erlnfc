@@ -1,0 +1,11 @@
+{application, erlnfc,
+ [
+  {description, "Erlang library for ITEAD PN532 NFC module"},
+  {vsn, "0.1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []}
+ ]}.
