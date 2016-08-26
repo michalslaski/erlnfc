@@ -16,6 +16,7 @@
 -export([init/1]).
 
 -define(SERVER, ?MODULE).
+-define(CHILD(I, Type), {I, {I, start_link, []}, permanent, 5000, Type, [I]}).
 
 %%%===================================================================
 %%% API functions
@@ -46,22 +47,22 @@ start_link() ->
 %%--------------------------------------------------------------------
 init([]) ->
 
-    SupFlags = #{strategy => one_for_one,
-                 intensity => 1,
-                 period => 5},
+    SupFlags = {one_for_one,
+                1,
+                5},
 
-    ErlNFCevent = #{id => 'erlnfc_event',
-                     start => {gen_event, start_link, [{local, erlnfc_event}]},
-                     restart => permanent,
-                     shutdown => 5000,
-                     type => worker,
-                     modules => dynamic},
+    ErlNFCevent = {'erlnfc_event',
+                   {gen_event, start_link, [{local, erlnfc_event}]},
+                   permanent,
+                   5000,
+                   worker,
+                   dynamic},
 
-    ErlNFCreader = #{id => 'erlnfc_reader',
-                     start => {erlnfc_reader, start_link, []},
-                     restart => permanent,
-                     shutdown => 5000,
-                     type => worker,
-                     modules => [erlnfc_reader]},
+    ErlNFCreader = {'erlnfc_reader',
+                    {erlnfc_reader, start_link, []},
+                    permanent,
+                    5000,
+                    worker,
+                    [erlnfc_reader]},
 
     {ok, {SupFlags, [ErlNFCevent, ErlNFCreader]}}.
