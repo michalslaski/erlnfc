@@ -7,5 +7,6 @@
                   kernel,
                   stdlib
                  ]},
-  {env, []}
+  {env, []},
+  {mod, {erlnfc_app, []}}
  ]}.
